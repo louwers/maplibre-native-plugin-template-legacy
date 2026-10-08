@@ -1,9 +1,8 @@
 .target(
             name: "RectangleLayer",
-            dependencies: [.product(name: "MapLibrePluginApi", package: "maplibre-native")],
+            dependencies: [.product(name: "MapLibrePluginApi", package: mapLibreIOSPackage)],
             path: "plugins/rectangle-layer",
             exclude: [
-                "BUILD.bazel",
                 "README.md",
                 "plugin.json", "swift-targets.swift", "examples",
                 "android",

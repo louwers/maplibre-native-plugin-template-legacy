@@ -1,35 +1,38 @@
 #import "AppDelegate.h"
 
-#import <GltfLayer/GltfLayer.h>
-#import <RectangleLayer/RectangleLayer.h>
-#import <NgonLayer/NgonLayer.h>
-#import "MLNMapCamera.h"
-#import "MLNMapView.h"
-#import "MLNMapViewDelegate.h"
-#import "MLNStyle.h"
+#import <MapLibre/MapLibre.h>
+
+#import "PluginCatalog.h"
 
 @interface AppDelegate () <MLNMapViewDelegate>
 @property(nonatomic, strong) MLNMapView *mapView;
 @property(nonatomic, strong) UISegmentedControl *scenes;
+@property(nonatomic, copy) NSArray<NSDictionary *> *sceneDefinitions;
 @end
 
 @implementation AppDelegate
 
+- (NSDictionary *)selectedScene {
+    return self.sceneDefinitions[(NSUInteger)self.scenes.selectedSegmentIndex];
+}
+
 - (NSURL *)selectedStyleURL {
-    NSString *name = @[@"positron-gltf", @"rectangle-style", @"ngon-style"][self.scenes.selectedSegmentIndex];
-    NSURL *url = [[NSBundle mainBundle] URLForResource:name withExtension:@"json"];
+    NSURL *url = [[NSBundle mainBundle] URLForResource:self.selectedScene[@"style"] withExtension:@"json"];
     NSAssert(url, @"The bundled plugin style is missing");
     return url;
 }
 
 - (void)mapView:(MLNMapView *)mapView didFinishLoadingStyle:(MLNStyle *)style {
-    BOOL model = [style layerWithIdentifier:@"eiffel-tower-gltf"] != nil;
-    CLLocationCoordinate2D center = model ? CLLocationCoordinate2DMake(48.8582621, 2.2944962)
-                                          : CLLocationCoordinate2DMake(48.8566, 2.3522);
+    NSArray<NSNumber *> *camera = self.selectedScene[@"camera"];
+    CLLocationCoordinate2D center = CLLocationCoordinate2DMake(camera[0].doubleValue, camera[1].doubleValue);
     mapView.camera = [MLNMapCamera cameraLookingAtCenterCoordinate:center
-                                                        altitude:model ? 650 : 20000
-                                                           pitch:model ? 62 : 0
-                                                         heading:model ? 28 : 0];
+                                                          altitude:camera[2].doubleValue
+                                                             pitch:camera[3].doubleValue
+                                                           heading:camera[4].doubleValue];
+}
+
+- (void)mapViewDidFailLoadingMap:(MLNMapView *)mapView withError:(NSError *)error {
+    NSLog(@"Map failed: %@", error.localizedDescription);
 }
 
 - (void)selectScene {
@@ -37,20 +40,26 @@
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    // Plugins must be registered before the first style that uses their layer types is loaded.
     NSError *error = nil;
-    if (![MLNGltfLayerPlugin registerPluginWithError:&error] ||
-        ![MLNRectangleLayerPlugin registerPluginWithError:&error] ||
-        ![MLNNgonLayerPlugin registerPluginWithError:&error]) {
+    if (!RegisterGalleryPlugins(&error)) {
         NSLog(@"Unable to register plugin: %@", error);
         return NO;
     }
 
+    self.sceneDefinitions = GalleryScenes();
+    NSMutableArray<NSString *> *titles = [NSMutableArray array];
+    NSInteger selected = 0;
+    NSString *requested = NSProcessInfo.processInfo.environment[@"PLUGIN_SCENE"];
+    for (NSDictionary *scene in self.sceneDefinitions) {
+        if ([scene[@"key"] isEqualToString:requested]) selected = (NSInteger)titles.count;
+        [titles addObject:scene[@"title"]];
+    }
+
     self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
     UIViewController *controller = [[UIViewController alloc] init];
-    self.scenes = [[UISegmentedControl alloc] initWithItems:@[@"Eiffel Tower", @"Rectangles", @"N-gons"]];
-    self.scenes.selectedSegmentIndex =
-        [NSProcessInfo.processInfo.environment[@"PLUGIN_SCENE"] isEqualToString:@"ngon"] ? 2 :
-        [NSProcessInfo.processInfo.environment[@"PLUGIN_SCENE"] isEqualToString:@"rectangle"] ? 1 : 0;
+    self.scenes = [[UISegmentedControl alloc] initWithItems:titles];
+    self.scenes.selectedSegmentIndex = selected;
     [self.scenes addTarget:self action:@selector(selectScene) forControlEvents:UIControlEventValueChanged];
 
     self.mapView = [[MLNMapView alloc] initWithFrame:controller.view.bounds styleURL:[self selectedStyleURL]];

@@ -1,0 +1,552 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0DC20CD4E25848B34D5D917A /* RectangleLayer in Frameworks */ = {isa = PBXBuildFile; productRef = 1F32C2633BA18E1FA971B6D6 /* RectangleLayer */; };
+		1890EFDEB8206380BA40E1C0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99AF8D228A237C354519F3FC /* Foundation.framework */; };
+		28707B43FEDA26B057F2F07D /* NgonLayer in Frameworks */ = {isa = PBXBuildFile; productRef = D6B458D1DBBD22FF061A6F3F /* NgonLayer */; };
+		2E0A19289805633B8582E7AD /* rectangle-style.json in Resources */ = {isa = PBXBuildFile; fileRef = CDC0998681CFB6967DBE373F /* rectangle-style.json */; };
+		5AA979FCC6F8EE3DCE63E95C /* MapLibre in Frameworks */ = {isa = PBXBuildFile; productRef = 7ABF968502B45F001441AFDA /* MapLibre */; };
+		622C8569A346337B54830A2F /* PluginCatalog.m in Sources */ = {isa = PBXBuildFile; fileRef = 297F5E6A5A0211C876A7A48D /* PluginCatalog.m */; };
+		6523067CD8F3F2774EA1A4D8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 75A29EEF033358AE18E6DBFB /* AppDelegate.m */; };
+		7011198582B6882F38ADFCBF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99AF8D228A237C354519F3FC /* Foundation.framework */; };
+		BA7A7D2D67F14454B2AAA6AA /* ngon-style.json in Resources */ = {isa = PBXBuildFile; fileRef = 56FF21D339C336211741A7A7 /* ngon-style.json */; };
+		D4EC6DFCF5023F6C490D18F0 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CC1C9CF5F73EFB46017BCA3 /* CoreLocation.framework */; };
+		E2A3F0054E2C34E6801E2980 /* PluginGalleryUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F54CDB385BED10B9B52C4F /* PluginGalleryUITests.swift */; };
+		F34508B5674AA36A4269B795 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7E2929E8DA59FAD39BAF5E1 /* UIKit.framework */; };
+		F727962248545EEB126D1D9D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EEDE62CE7F20F1930463858F /* main.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CB6D5A003C06CD2E4A65D8E9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4D76476294122D870717627D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4F4774A46C4ECC2F6E82D76C;
+			remoteInfo = PluginGallery;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		297F5E6A5A0211C876A7A48D /* PluginCatalog.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = PluginCatalog.m; sourceTree = "<group>"; };
+		35F54CDB385BED10B9B52C4F /* PluginGalleryUITests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PluginGalleryUITests.swift; sourceTree = "<group>"; };
+		56FF21D339C336211741A7A7 /* ngon-style.json */ = {isa = PBXFileReference; includeInIndex = 1; name = "ngon-style.json"; path = "../../plugins/ngon-layer/examples/android/assets/ngon-style.json"; sourceTree = "<group>"; };
+		5A26D70808162129751CE177 /* PluginGalleryUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PluginGalleryUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6196FD5CBEB69403975F2EAC /* PluginGallery.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PluginGallery.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		75A29EEF033358AE18E6DBFB /* AppDelegate.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		99AF8D228A237C354519F3FC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		9CC1C9CF5F73EFB46017BCA3 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		A912122A5ABFDD80BB5A201D /* AppDelegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		CDC0998681CFB6967DBE373F /* rectangle-style.json */ = {isa = PBXFileReference; includeInIndex = 1; name = "rectangle-style.json"; path = "../../plugins/rectangle-layer/examples/android/assets/rectangle-style.json"; sourceTree = "<group>"; };
+		D67EFAB590A0B172FFA58A97 /* PluginCatalog.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = PluginCatalog.h; sourceTree = "<group>"; };
+		D7E2929E8DA59FAD39BAF5E1 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		EEDE62CE7F20F1930463858F /* main.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6EC2C1E9E69CAF6390EA387C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7011198582B6882F38ADFCBF /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A87472B2892C446746A16DE6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1890EFDEB8206380BA40E1C0 /* Foundation.framework in Frameworks */,
+				5AA979FCC6F8EE3DCE63E95C /* MapLibre in Frameworks */,
+				28707B43FEDA26B057F2F07D /* NgonLayer in Frameworks */,
+				0DC20CD4E25848B34D5D917A /* RectangleLayer in Frameworks */,
+				F34508B5674AA36A4269B795 /* UIKit.framework in Frameworks */,
+				D4EC6DFCF5023F6C490D18F0 /* CoreLocation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		14DFB637F12BCC65C2D02885 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				99AF8D228A237C354519F3FC /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		152CB1EC526CF25683EDFFD4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6196FD5CBEB69403975F2EAC /* PluginGallery.app */,
+				5A26D70808162129751CE177 /* PluginGalleryUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		173D2BCDEC3B9FB2738657B3 = {
+			isa = PBXGroup;
+			children = (
+				152CB1EC526CF25683EDFFD4 /* Products */,
+				F6A2939DC0EDD71DFCE7C173 /* Frameworks */,
+				38553BADA20B53FF91C8A56C /* App */,
+				4E64CECEC403A2C3320BB54D /* Styles */,
+				763592A8AA0E69B40062578F /* UITests */,
+			);
+			sourceTree = "<group>";
+		};
+		38553BADA20B53FF91C8A56C /* App */ = {
+			isa = PBXGroup;
+			children = (
+				EEDE62CE7F20F1930463858F /* main.m */,
+				75A29EEF033358AE18E6DBFB /* AppDelegate.m */,
+				297F5E6A5A0211C876A7A48D /* PluginCatalog.m */,
+				A912122A5ABFDD80BB5A201D /* AppDelegate.h */,
+				D67EFAB590A0B172FFA58A97 /* PluginCatalog.h */,
+			);
+			name = App;
+			path = App;
+			sourceTree = "<group>";
+		};
+		4E64CECEC403A2C3320BB54D /* Styles */ = {
+			isa = PBXGroup;
+			children = (
+				56FF21D339C336211741A7A7 /* ngon-style.json */,
+				CDC0998681CFB6967DBE373F /* rectangle-style.json */,
+			);
+			name = Styles;
+			sourceTree = "<group>";
+		};
+		763592A8AA0E69B40062578F /* UITests */ = {
+			isa = PBXGroup;
+			children = (
+				35F54CDB385BED10B9B52C4F /* PluginGalleryUITests.swift */,
+			);
+			name = UITests;
+			path = UITests;
+			sourceTree = "<group>";
+		};
+		F6A2939DC0EDD71DFCE7C173 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				14DFB637F12BCC65C2D02885 /* iOS */,
+				D7E2929E8DA59FAD39BAF5E1 /* UIKit.framework */,
+				9CC1C9CF5F73EFB46017BCA3 /* CoreLocation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4F4774A46C4ECC2F6E82D76C /* PluginGallery */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 799FD6CE4C8A432D73504103 /* Build configuration list for PBXNativeTarget "PluginGallery" */;
+			buildPhases = (
+				89C7C3F68ACD099DD3C0F4E4 /* Sources */,
+				A87472B2892C446746A16DE6 /* Frameworks */,
+				0049125DB92A08421482371E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PluginGallery;
+			packageProductDependencies = (
+				7ABF968502B45F001441AFDA /* MapLibre */,
+				D6B458D1DBBD22FF061A6F3F /* NgonLayer */,
+				1F32C2633BA18E1FA971B6D6 /* RectangleLayer */,
+			);
+			productName = PluginGallery;
+			productReference = 6196FD5CBEB69403975F2EAC /* PluginGallery.app */;
+			productType = "com.apple.product-type.application";
+		};
+		65C44DD47B1400E6F2DFE0B4 /* PluginGalleryUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EE81BAF1205868CDC22F1E6A /* Build configuration list for PBXNativeTarget "PluginGalleryUITests" */;
+			buildPhases = (
+				DDB783E064EB1345AB9CE163 /* Sources */,
+				6EC2C1E9E69CAF6390EA387C /* Frameworks */,
+				9352CCA74A8CBCAE8368A5A9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C970C231904B46F47C8BB5D4 /* PBXTargetDependency */,
+			);
+			name = PluginGalleryUITests;
+			productName = PluginGalleryUITests;
+			productReference = 5A26D70808162129751CE177 /* PluginGalleryUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4D76476294122D870717627D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+			};
+			buildConfigurationList = 0B1184D1CBB49A77B0B40DDD /* Build configuration list for PBXProject "PluginGallery" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 173D2BCDEC3B9FB2738657B3;
+			minimizedProjectReferenceProxies = 0;
+			packageReferences = (
+				2981E5B5EEEB17DE7D7E96FC /* XCLocalSwiftPackageReference ".." */,
+				F7E9D372638B3040F3175F0D /* XCRemoteSwiftPackageReference "maplibre-ios-with-plugin-api" */,
+			);
+			preferredProjectObjectVersion = 100;
+			productRefGroup = 152CB1EC526CF25683EDFFD4 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4F4774A46C4ECC2F6E82D76C /* PluginGallery */,
+				65C44DD47B1400E6F2DFE0B4 /* PluginGalleryUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0049125DB92A08421482371E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BA7A7D2D67F14454B2AAA6AA /* ngon-style.json in Resources */,
+				2E0A19289805633B8582E7AD /* rectangle-style.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9352CCA74A8CBCAE8368A5A9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		89C7C3F68ACD099DD3C0F4E4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F727962248545EEB126D1D9D /* main.m in Sources */,
+				6523067CD8F3F2774EA1A4D8 /* AppDelegate.m in Sources */,
+				622C8569A346337B54830A2F /* PluginCatalog.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DDB783E064EB1345AB9CE163 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E2A3F0054E2C34E6801E2980 /* PluginGalleryUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C970C231904B46F47C8BB5D4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PluginGallery;
+			target = 4F4774A46C4ECC2F6E82D76C /* PluginGallery */;
+			targetProxy = CB6D5A003C06CD2E4A65D8E9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1C6290CADE5D8F865F7E01C8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = org.maplibre.plugins.PluginGalleryUITests;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = PluginGallery;
+			};
+			name = Debug;
+		};
+		1E192A2BABB3F0EAE7492CC9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		6E34A0EB0A62E587041A4B34 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = org.maplibre.plugins.PluginGalleryUITests;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = PluginGallery;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		75B49A2F145DB8D537E8A24F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Plugin Gallery";
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = org.maplibre.plugins.PluginGallery;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		93AE4C2108BE404FCB31BEE6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		B59E1582BFC1A5749C139BAC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Plugin Gallery";
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = org.maplibre.plugins.PluginGallery;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0B1184D1CBB49A77B0B40DDD /* Build configuration list for PBXProject "PluginGallery" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				93AE4C2108BE404FCB31BEE6 /* Debug */,
+				1E192A2BABB3F0EAE7492CC9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		799FD6CE4C8A432D73504103 /* Build configuration list for PBXNativeTarget "PluginGallery" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B59E1582BFC1A5749C139BAC /* Release */,
+				75B49A2F145DB8D537E8A24F /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EE81BAF1205868CDC22F1E6A /* Build configuration list for PBXNativeTarget "PluginGalleryUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6E34A0EB0A62E587041A4B34 /* Release */,
+				1C6290CADE5D8F865F7E01C8 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		2981E5B5EEEB17DE7D7E96FC /* XCLocalSwiftPackageReference ".." */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../..;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F7E9D372638B3040F3175F0D /* XCRemoteSwiftPackageReference "maplibre-ios-with-plugin-api" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/louwers/maplibre-ios-with-plugin-api";
+			requirement = {
+				kind = exactVersion;
+				version = "7.0.0-pre1";
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1F32C2633BA18E1FA971B6D6 /* RectangleLayer */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = RectangleLayer;
+		};
+		7ABF968502B45F001441AFDA /* MapLibre */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F7E9D372638B3040F3175F0D /* XCRemoteSwiftPackageReference "maplibre-ios-with-plugin-api" */;
+			productName = MapLibre;
+		};
+		D6B458D1DBBD22FF061A6F3F /* NgonLayer */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = NgonLayer;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 4D76476294122D870717627D /* Project object */;
+}
