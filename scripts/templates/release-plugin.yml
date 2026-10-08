@@ -26,18 +26,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Read pinned MapLibre revision
-        id: native
-        run: echo "revision=$(tr -d '\n' < native-revision.txt)" >> "$GITHUB_OUTPUT"
-
-      - name: Check out plugin-enabled MapLibre Native
-        uses: actions/checkout@v4
-        with:
-          repository: maplibre/maplibre-native
-          ref: ${{ steps.native.outputs.revision }}
-          path: maplibre-native
-          submodules: recursive
-
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -50,25 +38,14 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v4
 
-      - name: Publish the C plugin API locally
-        run: |
-          MAPLIBRE_VERSION="0.0.0-plugin-$(git -C maplibre-native rev-parse --short=12 HEAD)-SNAPSHOT"
-          echo "MAPLIBRE_VERSION=$MAPLIBRE_VERSION" >> "$GITHUB_ENV"
-          maplibre-native/platform/android/gradlew \
-            -p maplibre-native/platform/android \
-            :android-plugin-api:publishReleasePublicationToMavenLocal \
-            -PmaplibreVersion="$MAPLIBRE_VERSION" \
-            --stacktrace
-
       - name: Build Android plugin
         env:
           VERSION: ${{ inputs.version }}
         run: |
-          MAPLIBRE_REPOSITORY_URL="file://${HOME}/.m2/repository" \
-            ./gradlew \
+          # Compiles against the plugin-enabled MapLibre Android SDK pinned in gradle.properties.
+          ./gradlew \
             :plugins:${{ inputs.plugin }}:assembleRelease \
             -PpluginVersion="$VERSION" \
-            -PmaplibreVersion="$MAPLIBRE_VERSION" \
             --stacktrace
 
       - name: Stage release assets
@@ -87,67 +64,10 @@ jobs:
           name: android-release
           path: release-assets/*
 
-  ios:
-    name: Build iOS XCFramework
-    runs-on: macos-15
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Read pinned MapLibre revision
-        id: native
-        run: echo "revision=$(tr -d '\n' < native-revision.txt)" >> "$GITHUB_OUTPUT"
-
-      - name: Check out plugin-enabled MapLibre Native
-        uses: actions/checkout@v4
-        with:
-          repository: maplibre/maplibre-native
-          ref: ${{ steps.native.outputs.revision }}
-          path: maplibre-native
-          submodules: recursive
-
-      - uses: bazel-contrib/setup-bazel@0.19.0
-        with:
-          bazelisk-cache: true
-          disk-cache: true
-          repository-cache: true
-
-      - name: Build iOS plugin
-        env:
-          PLUGIN: ${{ inputs.plugin }}
-          VERSION: ${{ inputs.version }}
-        run: |
-          TARGET="$(jq -r .iosTarget "plugins/$PLUGIN/release.json")"
-          bazel build \
-            --@maplibre//:renderer=metal \
-            --override_module=maplibre="$GITHUB_WORKSPACE/maplibre-native" \
-            --override_module=maplibre-tile-spec="$GITHUB_WORKSPACE/maplibre-native/vendor/maplibre-tile-spec" \
-            --embed_label="$VERSION" \
-            --define=plugin_version="$VERSION" \
-            "$TARGET"
-
-      - name: Stage release assets
-        env:
-          PLUGIN: ${{ inputs.plugin }}
-          VERSION: ${{ inputs.version }}
-        run: |
-          OUTPUT="$(jq -r .iosBazelOutput "plugins/$PLUGIN/release.json")"
-          ASSET="$(jq -r .iosAssetName "plugins/$PLUGIN/release.json")"
-          mkdir -p release-assets
-          cp "$OUTPUT" "release-assets/$ASSET-$VERSION.xcframework.zip"
-          cd release-assets
-          shasum -a 256 "$ASSET-$VERSION.xcframework.zip" \
-            > "$ASSET-$VERSION.xcframework.zip.sha256"
-
-      - uses: actions/upload-artifact@v7
-        with:
-          name: ios-release
-          path: release-assets/*
-
   release:
     name: Publish GitHub release
     needs:
       - android
-      - ios
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v8

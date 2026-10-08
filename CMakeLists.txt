@@ -22,6 +22,7 @@ if(NOT plugin_backend_count EQUAL 1)
     message(FATAL_ERROR "Select exactly one plugin backend: MLN_WITH_OPENGL, MLN_WITH_VULKAN, or MLN_WITH_METAL")
 endif()
 
+set(MLN_WITH_PLUGINS ON CACHE BOOL "" FORCE)
 set(MLN_WITH_GLFW OFF CACHE BOOL "" FORCE)
 set(MLN_WITH_WERROR OFF CACHE BOOL "" FORCE)
 add_subdirectory("${MAPLIBRE_NATIVE_SOURCE_DIR}" "${CMAKE_BINARY_DIR}/maplibre-native")

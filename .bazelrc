@@ -1,4 +1,0 @@
-build --define=plugin_version=0.0.2
-common --enable_platform_specific_config
-common:macos --linkopt=-L/opt/homebrew/lib
-common:macos --@maplibre//platform/macos:macos_loop=cfrunloop

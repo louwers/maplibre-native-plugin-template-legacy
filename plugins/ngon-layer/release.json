@@ -1,6 +1,3 @@
 {
-  "androidArtifact": "ngon-layer",
-  "iosTarget": "//plugins/ngon-layer:NgonLayer.xcframework",
-  "iosBazelOutput": "bazel-bin/plugins/ngon-layer/NgonLayer.xcframework.xcframework.zip",
-  "iosAssetName": "NgonLayer"
+  "androidArtifact": "ngon-layer"
 }

@@ -28,8 +28,6 @@ jobs:
             cmake_flag: MLN_WITH_VULKAN
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: recursive
 
       - name: Read pinned MapLibre revision
         id: native
@@ -87,8 +85,6 @@ jobs:
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: recursive
 
       - name: Read pinned MapLibre revision
         id: native
@@ -102,26 +98,26 @@ jobs:
           path: maplibre-native
           submodules: recursive
 
-      - uses: bazel-contrib/setup-bazel@0.19.0
-        with:
-          bazelisk-cache: true
-          disk-cache: true
-          repository-cache: true
-
       - name: Install renderer dependencies
-        run: brew install glfw icu4c jpeg-turbo libpng libuv webp
+        run: brew install icu4c jpeg-turbo libpng libuv webp ninja
 
-      - name: Build shared runner
+      - name: Configure Metal runner
         run: |
-          bazel build \
-            --@maplibre//:renderer=metal \
-            --override_module=maplibre="$GITHUB_WORKSPACE/maplibre-native" \
-            --override_module=maplibre-tile-spec="$GITHUB_WORKSPACE/maplibre-native/vendor/maplibre-tile-spec" \
-            //:render_tests_metal
+          cmake \
+            -S . \
+            -B build-Metal \
+            -G Ninja \
+            -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+            -DMAPLIBRE_NATIVE_SOURCE_DIR="$GITHUB_WORKSPACE/maplibre-native" \
+            -DMLN_WITH_METAL=ON \
+            -DMLN_WITH_OPENGL=OFF
+
+      - name: Build Metal runner
+        run: cmake --build build-Metal --target plugin-render-tests
 
       - name: Run all plugin manifests
         run: |
-          ./bazel-bin/render_tests_metal \
+          build-Metal/plugin-render-tests \
             --plugin-test-root "$GITHUB_WORKSPACE" \
             --recycle-map
 

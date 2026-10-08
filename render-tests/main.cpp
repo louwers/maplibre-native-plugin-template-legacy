@@ -22,7 +22,7 @@ namespace fs = std::filesystem;
 
 bool isRepositoryRoot(const fs::path& path) {
     std::error_code error;
-    return fs::is_directory(path / "plugins", error) && fs::is_regular_file(path / "MODULE.bazel", error);
+    return fs::is_directory(path / "plugins", error) && fs::is_regular_file(path / "settings.gradle.kts", error);
 }
 
 std::optional<fs::path> findRepositoryRoot(fs::path candidate) {

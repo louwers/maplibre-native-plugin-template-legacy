@@ -1,6 +1,3 @@
 {
-  "androidArtifact": "rectangle-layer",
-  "iosTarget": "//plugins/rectangle-layer:RectangleLayer.xcframework",
-  "iosBazelOutput": "bazel-bin/plugins/rectangle-layer/RectangleLayer.xcframework.xcframework.zip",
-  "iosAssetName": "RectangleLayer"
+  "androidArtifact": "rectangle-layer"
 }
