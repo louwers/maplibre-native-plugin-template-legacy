@@ -55,18 +55,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/demo_gltf"
-            style="@style/DemoCard"
-            android:contentDescription="@string/gltf_title">
-            <TextView style="@style/DemoCardIcon" android:text="◇" />
-            <LinearLayout style="@style/DemoCardCopy">
-                <TextView style="@style/DemoCardTitle" android:text="@string/gltf_title" />
-                <TextView style="@style/DemoCardDescription" android:text="@string/gltf_description" />
-            </LinearLayout>
-            <TextView style="@style/DemoCardArrow" />
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/demo_rectangles"
             style="@style/DemoCard"
             android:contentDescription="@string/rectangles_title">
@@ -74,18 +62,6 @@
             <LinearLayout style="@style/DemoCardCopy">
                 <TextView style="@style/DemoCardTitle" android:text="@string/rectangles_title" />
                 <TextView style="@style/DemoCardDescription" android:text="@string/rectangles_description" />
-            </LinearLayout>
-            <TextView style="@style/DemoCardArrow" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/demo_heatmap"
-            style="@style/DemoCard"
-            android:contentDescription="@string/heatmap_title">
-            <TextView style="@style/DemoCardIcon" android:text="◎" />
-            <LinearLayout style="@style/DemoCardCopy">
-                <TextView style="@style/DemoCardTitle" android:text="@string/heatmap_title" />
-                <TextView style="@style/DemoCardDescription" android:text="@string/heatmap_description" />
             </LinearLayout>
             <TextView style="@style/DemoCardArrow" />
         </LinearLayout>

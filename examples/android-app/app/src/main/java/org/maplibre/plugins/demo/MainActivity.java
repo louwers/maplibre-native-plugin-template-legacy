@@ -12,9 +12,7 @@ public final class MainActivity extends Activity {
     setContentView(R.layout.activity_main);
 
     findViewById(R.id.demo_ngon).setOnClickListener(view -> open(NgonDemoActivity.class));
-    findViewById(R.id.demo_gltf).setOnClickListener(view -> open(GltfDemoActivity.class));
     findViewById(R.id.demo_rectangles).setOnClickListener(view -> open(RectangleDemoActivity.class));
-    findViewById(R.id.demo_heatmap).setOnClickListener(view -> open(HeatmapDemoActivity.class));
   }
 
   private void open(Class<? extends Activity> activity) {
