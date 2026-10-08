@@ -56,10 +56,13 @@ stencil-clipped at tile seams. Scalar and enum zoom endpoints are packed into fl
 attributes so all thirteen properties can be feature-driven at once within the
 portable sixteen-attribute limit. Geometry and GPU resources stay owned by MapLibre.
 
-The same generator produces OpenGL ES, Vulkan and Metal shader sources:
+The same generator produces OpenGL ES, Vulkan and Metal shader sources. The
+generated header is checked in so Swift Package Manager builds need no Node.js;
+regenerate it after changing the generator:
 
 ```sh
-node plugins/ngon-layer/scripts/generate-shaders.mjs --check
+node plugins/ngon-layer/scripts/generate-shaders.mjs \
+  --output plugins/ngon-layer/shared/include/ngon_shader_sources.hpp
 cmake --build build-Metal --target ngon-unit-tests
 ctest --test-dir build-Metal -R '^ngon-unit-tests$' --output-on-failure
 ```
