@@ -6,7 +6,6 @@
 local.properties
 dependency-resolution/
 .DS_Store
-bazel-*
 plugins/*/render-tests/cache.db
 plugins/*/render-tests/results/*
 !plugins/*/render-tests/results/.gitkeep
