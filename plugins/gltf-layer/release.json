@@ -1,6 +1,0 @@
-{
-  "androidArtifact": "gltf-layer",
-  "iosTarget": "//plugins/gltf-layer:GltfLayer.xcframework",
-  "iosBazelOutput": "bazel-bin/plugins/gltf-layer/GltfLayer.xcframework.xcframework.zip",
-  "iosAssetName": "GltfLayer"
-}

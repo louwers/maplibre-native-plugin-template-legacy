@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="gltf_title">Eiffel Tower GLTF</string>
-    <string name="gltf_description">Load and render a remote GLB model</string>
-</resources>

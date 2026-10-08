@@ -24,9 +24,6 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "maplibre-native-plugin-template"
-include(":plugins:gltf-layer")
-include(":plugins:heatmap-layer")
-include(":plugins:hillshade-layer")
 include(":plugins:rectangle-layer")
 include(":plugins:ngon-layer")
 include(":examples:android-app:app")

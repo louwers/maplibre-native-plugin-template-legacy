@@ -1,6 +1,0 @@
-{
-  "androidArtifact": "hillshade-layer",
-  "iosTarget": "//plugins/hillshade-layer:HillshadeLayer.xcframework",
-  "iosBazelOutput": "bazel-bin/plugins/hillshade-layer/HillshadeLayer.xcframework.xcframework.zip",
-  "iosAssetName": "HillshadeLayer"
-}

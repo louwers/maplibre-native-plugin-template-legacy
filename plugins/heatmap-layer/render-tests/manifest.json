@@ -1,7 +1,0 @@
-{
-  "base_test_path": ".",
-  "cache_path": "fixtures.db",
-  "expectation_paths": [],
-  "ignore_paths": [],
-  "result_path": "results"
-}
