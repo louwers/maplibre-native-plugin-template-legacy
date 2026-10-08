@@ -9,6 +9,6 @@ MapLibre render tests; the shared runner contains no rectangle-specific cases.
 Run only this plugin's manifest from the repository root with:
 
 ```sh
-./bazel-bin/render_tests_metal \
+build-Metal/plugin-render-tests \
   --manifestPath plugins/rectangle-layer/render-tests/manifest.json
 ```

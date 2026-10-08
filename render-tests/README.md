@@ -20,31 +20,29 @@ existing plugin requires no runner or build change.
 
 Each plugin contributes a tiny self-registering `render-tests/register.cpp` and a
 plugin-local CMake definition. CMake discovers those definitions automatically.
-For Bazel, expose the standard `render_test_plugin`,
-`render_test_plugin_metal`, and `render_test_data` targets and add the package
-name once to `plugins/render_tests.bzl`. The shared runner and CI contain no
-plugin-specific registration or manifest lists.
+The shared runner and CI contain no plugin-specific registration or manifest lists.
+
+The runner builds MapLibre Native from source with `MLN_WITH_PLUGINS=ON`. Use a
+checkout of the revision in `native-revision.txt` (CI checks it out next to the
+repository); it has the same plugin API as the SDKs the template consumes.
 
 On macOS, build and run all discovered Metal suites from the repository root:
 
 ```sh
-bazel build --@maplibre//:renderer=metal //:render_tests_metal
-./bazel-bin/render_tests_metal --plugin-test-root "$PWD" --recycle-map
+cmake -S . -B build-Metal -G Ninja \
+  -DMAPLIBRE_NATIVE_SOURCE_DIR="$PWD/../maplibre-native" \
+  -DMLN_WITH_METAL=ON -DMLN_WITH_OPENGL=OFF
+cmake --build build-Metal --target plugin-render-tests
+build-Metal/plugin-render-tests --plugin-test-root "$PWD" --recycle-map
 ```
 
 List the discovered manifests without rendering:
 
 ```sh
-./bazel-bin/render_tests_metal --plugin-test-root "$PWD" --list-plugin-tests
+build-Metal/plugin-render-tests --plugin-test-root "$PWD" --list-plugin-tests
 ```
 
 Arguments understood by MapLibre's runner, including `--filter`, `--online`, and `--update default`, are forwarded to every discovered manifest. Pass `--manifestPath <path>` to run only one plugin manifest.
-
-The portable Linux OpenGL Bazel target is:
-
-```sh
-bazel test //:render_tests
-```
 
 CI exercises every discovered plugin fixture with Linux OpenGL, headless Vulkan,
 and Metal. The CMake runner used by the Linux jobs can be reproduced against a
