@@ -72,12 +72,12 @@ shared across backends; backend-specific skips or baselines are not needed.
 
 ## Android
 
-Follow the [shared Android setup](../../README.md#shared-android-setup) to configure
-JitPack and a matching plugin-enabled MapLibre SDK. Add this plugin's dependency:
+Follow the [Android setup](../../README.md#android-setup) to configure JitPack
+and the plugin-enabled MapLibre SDK. Add this plugin's dependency:
 
 ```kotlin
 dependencies {
-    implementation("org.maplibre.gl:android-sdk-opengl:<matching-maplibre-version>")
+    implementation("org.maplibre.gl:android-sdk-opengl:13.6.1-pre935d410353da9d701ad42c97f2e0c300c8d408b8")
     implementation("com.github.louwers.maplibre-native-plugin-template:ngon-layer:<version-or-commit>")
 }
 ```
@@ -96,7 +96,7 @@ NgonLayerPlugin.register()
 Build the plugin from the repository root:
 
 ```sh
-./gradlew :plugins:ngon-layer:assembleRelease -PmaplibreVersion=<matching-version>
+./gradlew :plugins:ngon-layer:assembleRelease
 ```
 
 ### Android example
@@ -104,7 +104,7 @@ Build the plugin from the repository root:
 Install the gallery and choose **Capital Atlas**:
 
 ```sh
-./gradlew :examples:android-app:app:installOpenglDebug -PmaplibreVersion=<matching-version>
+./gradlew :examples:android-app:app:installOpenglDebug
 adb shell am start -n org.maplibre.plugins.demo/.MainActivity
 ```
 
@@ -117,7 +117,7 @@ is an administrative level, not a boolean: level 2 is a gold hexagon, levels 3â€
 are teal pentagons, and levels 5â€“6 are coral diamonds. Administrative terminology
 varies by country. Colors, corners, rotation and zoom-interpolated radii are
 feature-driven; the style expressions live in
-[ngon-capitals.layers.json](../../examples/android-app/app/src/main/assets/ngon-capitals.layers.json).
+[ngon-capitals.layers.json](examples/android/assets/ngon-capitals.layers.json).
 The demo is map-only: pan, zoom and tilt with the standard map gestures, without
 custom controls or overlays. More capitals become available as the provider's
 tile zoom increases. An Internet connection is required; no capital coordinates
@@ -126,15 +126,15 @@ and marker-colored pixels before/after a programmatic paint-property update:
 
 ```sh
 ./gradlew :examples:android-app:app:connectedVulkanDebugAndroidTest \
-  -PmaplibreVersion=<matching-version> \
   -Pandroid.testInstrumentationRunnerArguments.class=org.maplibre.plugins.demo.CapitalExplorerTest
 ```
 
 ## iOS / Metal
 
-Follow the [shared Apple setup](../../README.md#shared-apple-setup) and select the
-`NgonLayer` Swift Package Manager product. Link a matching plugin-enabled MapLibre
-build. Register before loading a style that uses this plugin:
+Follow the [iOS setup](../../README.md#ios-setup): add the plugin-enabled
+`MapLibre` product from `louwers/maplibre-ios-with-plugin-api` and this
+repository's `NgonLayer` product. Register before loading a style that uses
+this plugin:
 
 ```swift
 import NgonLayer
@@ -142,23 +142,20 @@ import NgonLayer
 try NgonLayerPlugin.registerPlugin()
 ```
 
-Build the iOS simulator library with Bazel from the repository root:
+Build the plugin for the simulator from the repository root:
 
 ```sh
-bazel build --@maplibre//:renderer=metal --ios_multi_cpus=sim_arm64 \
-  //plugins/ngon-layer:NgonLayer
+xcodebuild -scheme NgonLayer -destination 'generic/platform=iOS Simulator' build
 ```
 
 ### iOS example
 
-With an iOS simulator booted, build and run this plugin's gallery scene:
+Open `examples/ios-app/PluginGallery.xcodeproj` and run the `PluginGallery` scheme
+with `PLUGIN_SCENE=ngon` in the scheme environment, or run the gallery UI test,
+which screenshots every scene:
 
 ```sh
-bazel build --@maplibre//:renderer=metal --ios_multi_cpus=sim_arm64 \
-  //examples/ios-app:PluginGallery
-xcrun simctl install booted \
-  bazel-bin/examples/ios-app/PluginGallery_archive-root/Payload/PluginGallery.app
-SIMCTL_CHILD_PLUGIN_SCENE=ngon xcrun simctl launch booted org.maplibre.plugins.gallery
+examples/ios-app/scripts/test.sh SIMULATOR_UDID
 ```
 
 The iOS scene uses the synthetic point-marker style; Capital Atlas is currently
@@ -170,6 +167,6 @@ Use the [shared runner instructions](../../render-tests/README.md). To run only
 this plugin after building the Metal runner:
 
 ```sh
-./bazel-bin/render_tests_metal \
+build-Metal/plugin-render-tests \
   --manifestPath plugins/ngon-layer/render-tests/manifest.json --recycle-map
 ```
