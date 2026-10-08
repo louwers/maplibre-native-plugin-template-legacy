@@ -107,7 +107,6 @@ mln_plugin_status layoutFeature(void* instance, const mln_plugin_feature_v1* fea
         layout.indices.insert(layout.indices.end(), std::begin(quad), std::end(quad));
         active.vertex_length += 4;
         active.index_length += 6;
-        active.feature_index = feature->feature_index;
     }
     if (layout.vertices.size() > firstVertex) {
         layout.featureRanges.push_back({sizeof(mln_plugin_feature_vertex_range_v1),
@@ -135,18 +134,16 @@ mln_plugin_status finishLayout(void* instance, mln_plugin_bucket_v1* output) {
                          static_cast<uint32_t>(layout.vertices.size()),
                          sizeof(Vertex)};
     layout.attributes = {{
-        {sizeof(mln_plugin_attribute_binding_v1), positionAttribute, vertexStream, offsetof(Vertex, position), MLN_PLUGIN_VERTEX_INT16_X2},
-        {sizeof(mln_plugin_attribute_binding_v1), cornerAttribute, vertexStream, offsetof(Vertex, corner), MLN_PLUGIN_VERTEX_INT16_X2},
+        {sizeof(mln_plugin_attribute_binding_v1), positionAttribute, vertexStream, offsetof(Vertex, position)},
+        {sizeof(mln_plugin_attribute_binding_v1), cornerAttribute, vertexStream, offsetof(Vertex, corner)},
     }};
     auto& drawable = layout.drawables[0];
     drawable.struct_size = sizeof(drawable);
     drawable.drawable_key = rectangleDrawable;
     drawable.shader_id = str("rectangle");
-    drawable.draw_mode = MLN_PLUGIN_DRAW_MODE_TRIANGLES;
-    drawable.render_stage = MLN_PLUGIN_RENDER_STAGE_TRANSLUCENT;
-    drawable.depth_mode = MLN_PLUGIN_DEPTH_READ_ONLY;
-    drawable.blend_mode = MLN_PLUGIN_BLEND_PREMULTIPLIED_ALPHA;
-    drawable.enable_stencil = 1;
+    // Indexed triangles in the translucent pass with premultiplied-alpha blending.
+    // Point ownership is half-open; rectangles may extend across their tile edge.
+    drawable.depth_mode = MLN_PLUGIN_DRAWABLE_DEPTH_READ_ONLY;
     drawable.attributes = layout.attributes.data();
     drawable.attribute_count = layout.attributes.size();
     drawable.segments = layout.segments.data();
@@ -615,11 +612,11 @@ constexpr mln_plugin_value makeColor(float r, float g, float b, float a) {
 }
 
 const std::array<mln_plugin_property_descriptor_v1, 5> properties = {{
-    {sizeof(mln_plugin_property_descriptor_v1), str("rectangle-color"), MLN_PLUGIN_VALUE_COLOR, MLN_PLUGIN_PROPERTY_PAINT, makeColor(0, 0, 0, 1), MLN_PLUGIN_EXPRESSION_CAMERA | MLN_PLUGIN_EXPRESSION_FEATURE | MLN_PLUGIN_EXPRESSION_COMPOSITE | MLN_PLUGIN_EXPRESSION_FEATURE_STATE, 1, 0, 0, 0, 0, 0, 0, nullptr, 0},
-    {sizeof(mln_plugin_property_descriptor_v1), str("rectangle-width"), MLN_PLUGIN_VALUE_FLOAT, MLN_PLUGIN_PROPERTY_PAINT, makeFloat(10), MLN_PLUGIN_EXPRESSION_CAMERA | MLN_PLUGIN_EXPRESSION_FEATURE | MLN_PLUGIN_EXPRESSION_COMPOSITE | MLN_PLUGIN_EXPRESSION_FEATURE_STATE, 1, 0, 0, 0, 0, 0, 0, nullptr, 0},
-    {sizeof(mln_plugin_property_descriptor_v1), str("rectangle-height"), MLN_PLUGIN_VALUE_FLOAT, MLN_PLUGIN_PROPERTY_PAINT, makeFloat(10), MLN_PLUGIN_EXPRESSION_CAMERA | MLN_PLUGIN_EXPRESSION_FEATURE | MLN_PLUGIN_EXPRESSION_COMPOSITE | MLN_PLUGIN_EXPRESSION_FEATURE_STATE, 1, 0, 0, 0, 0, 0, 0, nullptr, 0},
-    {sizeof(mln_plugin_property_descriptor_v1), str("rectangle-stroke-width"), MLN_PLUGIN_VALUE_FLOAT, MLN_PLUGIN_PROPERTY_PAINT, makeFloat(0), MLN_PLUGIN_EXPRESSION_CAMERA | MLN_PLUGIN_EXPRESSION_FEATURE | MLN_PLUGIN_EXPRESSION_COMPOSITE | MLN_PLUGIN_EXPRESSION_FEATURE_STATE, 1, 0, 0, 0, 0, 0, 0, nullptr, 0},
-    {sizeof(mln_plugin_property_descriptor_v1), str("rectangle-stroke-color"), MLN_PLUGIN_VALUE_COLOR, MLN_PLUGIN_PROPERTY_PAINT, makeColor(0, 0, 0, 1), MLN_PLUGIN_EXPRESSION_CAMERA | MLN_PLUGIN_EXPRESSION_FEATURE | MLN_PLUGIN_EXPRESSION_COMPOSITE | MLN_PLUGIN_EXPRESSION_FEATURE_STATE, 1, 0, 0, 0, 0, 0, 0, nullptr, 0},
+    {sizeof(mln_plugin_property_descriptor_v1), str("rectangle-color"), MLN_PLUGIN_VALUE_COLOR, makeColor(0, 0, 0, 1), MLN_PLUGIN_EXPRESSION_CAMERA | MLN_PLUGIN_EXPRESSION_FEATURE | MLN_PLUGIN_EXPRESSION_COMPOSITE | MLN_PLUGIN_EXPRESSION_FEATURE_STATE, 1, 0, 0, 0, 0, nullptr, 0},
+    {sizeof(mln_plugin_property_descriptor_v1), str("rectangle-width"), MLN_PLUGIN_VALUE_FLOAT, makeFloat(10), MLN_PLUGIN_EXPRESSION_CAMERA | MLN_PLUGIN_EXPRESSION_FEATURE | MLN_PLUGIN_EXPRESSION_COMPOSITE | MLN_PLUGIN_EXPRESSION_FEATURE_STATE, 1, 0, 0, 0, 0, nullptr, 0},
+    {sizeof(mln_plugin_property_descriptor_v1), str("rectangle-height"), MLN_PLUGIN_VALUE_FLOAT, makeFloat(10), MLN_PLUGIN_EXPRESSION_CAMERA | MLN_PLUGIN_EXPRESSION_FEATURE | MLN_PLUGIN_EXPRESSION_COMPOSITE | MLN_PLUGIN_EXPRESSION_FEATURE_STATE, 1, 0, 0, 0, 0, nullptr, 0},
+    {sizeof(mln_plugin_property_descriptor_v1), str("rectangle-stroke-width"), MLN_PLUGIN_VALUE_FLOAT, makeFloat(0), MLN_PLUGIN_EXPRESSION_CAMERA | MLN_PLUGIN_EXPRESSION_FEATURE | MLN_PLUGIN_EXPRESSION_COMPOSITE | MLN_PLUGIN_EXPRESSION_FEATURE_STATE, 1, 0, 0, 0, 0, nullptr, 0},
+    {sizeof(mln_plugin_property_descriptor_v1), str("rectangle-stroke-color"), MLN_PLUGIN_VALUE_COLOR, makeColor(0, 0, 0, 1), MLN_PLUGIN_EXPRESSION_CAMERA | MLN_PLUGIN_EXPRESSION_FEATURE | MLN_PLUGIN_EXPRESSION_COMPOSITE | MLN_PLUGIN_EXPRESSION_FEATURE_STATE, 1, 0, 0, 0, 0, nullptr, 0},
 }};
 
 const std::array<mln_plugin_shader_attribute_v1, 12> shaderAttributes = {{
@@ -649,7 +646,7 @@ const std::array<mln_plugin_uniform_block_descriptor_v1, 1> shaderUniforms = {{
      str("PluginDrawableUBO"),
      sizeof(DrawableUBO),
      MLN_PLUGIN_SHADER_STAGE_VERTEX,
-     MLN_PLUGIN_UNIFORM_SCOPE_DRAWABLE},
+     MLN_PLUGIN_UNIFORM_DRAWABLE},
 }};
 
 const std::array<mln_plugin_shader_property_binding_v1, 5> propertyBindings = {{
@@ -669,8 +666,6 @@ const std::array<mln_plugin_shader_descriptor_v1, 1> shaders = {{
      shaderAttributes.size(),
      shaderUniforms.data(),
      shaderUniforms.size(),
-     nullptr,
-     0,
      propertyBindings.data(),
      propertyBindings.size()},
 }};
@@ -680,10 +675,8 @@ const mln_plugin_layer_type_v1 layerType = [] {
     value.struct_size = sizeof(value);
     value.layer_type = str("rectangle");
     value.backend_mask = MLN_PLUGIN_BACKEND_OPENGL | MLN_PLUGIN_BACKEND_VULKAN | MLN_PLUGIN_BACKEND_METAL;
-    value.render_stage = MLN_PLUGIN_RENDER_STAGE_TRANSLUCENT;
     value.properties = properties.data();
     value.property_count = properties.size();
-    value.source_kind = MLN_PLUGIN_SOURCE_GEOMETRY;
     value.geometry_type_mask = MLN_PLUGIN_GEOMETRY_POINT;
     value.shaders = shaders.data();
     value.shader_count = shaders.size();

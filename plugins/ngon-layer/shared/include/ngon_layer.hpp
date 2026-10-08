@@ -11,9 +11,9 @@
 extern "C" {
 #endif
 
-MLN_NGON_EXPORT mln_plugin_status
-mln_ngon_layer_register(mln_plugin_register_function_v1 register_plugin,
-                        char* error_message, size_t error_message_capacity);
+MLN_NGON_EXPORT mln_plugin_status mln_ngon_layer_register(mln_plugin_register_function_v1 register_plugin,
+                                                          char* error_message,
+                                                          size_t error_message_capacity);
 
 #ifdef __cplusplus
 }

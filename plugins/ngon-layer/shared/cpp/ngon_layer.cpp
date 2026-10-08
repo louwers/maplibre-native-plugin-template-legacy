@@ -108,7 +108,6 @@ mln_plugin_status layoutFeature(void* instance, const mln_plugin_feature_v1* fea
         layout.indices.insert(layout.indices.end(), std::begin(quad), std::end(quad));
         active.vertex_length += 4;
         active.index_length += 6;
-        active.feature_index = feature->feature_index;
     }
     if (layout.vertices.size() > firstVertex) {
         layout.featureRanges.push_back({sizeof(mln_plugin_feature_vertex_range_v1),
@@ -138,26 +137,18 @@ mln_plugin_status finishLayout(void* instance, mln_plugin_bucket_v1* output) {
                          static_cast<uint32_t>(layout.vertices.size()),
                          sizeof(Vertex)};
     layout.attributes = {{
-        {sizeof(mln_plugin_attribute_binding_v1),
-         positionAttribute,
-         vertexStream,
-         offsetof(Vertex, position),
-         MLN_PLUGIN_VERTEX_INT16_X2},
+        {sizeof(mln_plugin_attribute_binding_v1), positionAttribute, vertexStream, offsetof(Vertex, position)},
     }};
     auto& drawable = layout.drawables[0];
     drawable.struct_size = sizeof(drawable);
     drawable.drawable_key = ngonDrawable;
     drawable.shader_id = str("ngon");
-    drawable.draw_mode = MLN_PLUGIN_DRAW_MODE_TRIANGLES;
-    drawable.render_stage = MLN_PLUGIN_RENDER_STAGE_TRANSLUCENT;
-    drawable.depth_mode = MLN_PLUGIN_DEPTH_READ_ONLY;
-    drawable.blend_mode = MLN_PLUGIN_BLEND_PREMULTIPLIED_ALPHA;
     // Point ownership is half-open; markers may extend across their tile edge.
-    drawable.enable_stencil = 0;
     drawable.attributes = layout.attributes.data();
     drawable.attribute_count = layout.attributes.size();
     drawable.segments = layout.segments.data();
     drawable.segment_count = layout.segments.size();
+    drawable.depth_mode = MLN_PLUGIN_DRAWABLE_DEPTH_READ_ONLY;
 
     output->vertex_streams = layout.vertices.empty() ? nullptr : layout.streams.data();
     output->vertex_stream_count = layout.vertices.empty() ? 0 : layout.streams.size();
@@ -249,7 +240,6 @@ constexpr mln_plugin_property_descriptor_v1 property(mln_plugin_string name,
     p.struct_size = sizeof(p);
     p.name = name;
     p.type = value.type;
-    p.scope = MLN_PLUGIN_PROPERTY_PAINT;
     p.default_value = value;
     p.expression_capabilities = MLN_PLUGIN_EXPRESSION_CAMERA | MLN_PLUGIN_EXPRESSION_FEATURE |
                                 MLN_PLUGIN_EXPRESSION_COMPOSITE | MLN_PLUGIN_EXPRESSION_FEATURE_STATE;
@@ -429,7 +419,7 @@ const mln_plugin_uniform_block_descriptor_v1 uniforms[] = {
      str("NgonDrawableUBO"),
      sizeof(DrawableUBO),
      MLN_PLUGIN_SHADER_STAGE_VERTEX,
-     MLN_PLUGIN_UNIFORM_SCOPE_DRAWABLE},
+     MLN_PLUGIN_UNIFORM_DRAWABLE},
 };
 const mln_plugin_shader_descriptor_v1 shader = {
     sizeof(mln_plugin_shader_descriptor_v1),
@@ -440,8 +430,6 @@ const mln_plugin_shader_descriptor_v1 shader = {
     std::size(shaderAttributes),
     uniforms,
     std::size(uniforms),
-    nullptr,
-    0,
     propertyBindings,
     std::size(propertyBindings),
 };
@@ -450,10 +438,8 @@ const mln_plugin_layer_type_v1 layerType = [] {
     v.struct_size = sizeof(v);
     v.layer_type = str("ngon");
     v.backend_mask = MLN_PLUGIN_BACKEND_OPENGL | MLN_PLUGIN_BACKEND_VULKAN | MLN_PLUGIN_BACKEND_METAL;
-    v.render_stage = MLN_PLUGIN_RENDER_STAGE_TRANSLUCENT;
     v.properties = properties;
     v.property_count = std::size(properties);
-    v.source_kind = MLN_PLUGIN_SOURCE_GEOMETRY;
     v.geometry_type_mask = MLN_PLUGIN_GEOMETRY_POINT;
     v.shaders = &shader;
     v.shader_count = 1;
