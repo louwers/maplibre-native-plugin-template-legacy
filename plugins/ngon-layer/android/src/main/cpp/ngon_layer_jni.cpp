@@ -1,6 +1,6 @@
 #include <jni.h>
 
-#include <cstdint>
+#include <dlfcn.h>
 
 #include "ngon_layer.hpp"
 
@@ -21,15 +21,24 @@ jobject makeResult(JNIEnv* env, mln_plugin_status status, const char* message) {
 } // namespace
 
 extern "C" JNIEXPORT jobject JNICALL
-Java_org_maplibre_plugins_ngon_NgonLayerPlugin_nativeRegister(JNIEnv* env,
-                                                                        jclass,
-                                                                        jlong functionAddress) {
-    char error[512]{};
-    if (!functionAddress) {
-        return makeResult(env, MLN_PLUGIN_STATUS_NOT_FOUND, "MapLibre plugin registration function is unavailable");
+Java_org_maplibre_plugins_ngon_NgonLayerPlugin_nativeRegister(JNIEnv* env, jclass) {
+    // Resolve the entry point from the renderer MapLibre already loaded; never load a second copy.
+    // Multi-backend SDKs load the OpenGL renderer as libmaplibre-opengl.so, all others as libmaplibre.so.
+    constexpr const char* libraries[] = {"libmaplibre-opengl.so", "libmaplibre.so"};
+    void* host = nullptr;
+    for (const char* library : libraries) {
+        if ((host = dlopen(library, RTLD_NOW | RTLD_NOLOAD))) break;
     }
-    const auto registerPlugin =
-        reinterpret_cast<mln_plugin_register_function_v1>(static_cast<uintptr_t>(functionAddress));
+    if (!host) {
+        return makeResult(env, MLN_PLUGIN_STATUS_NOT_FOUND, "Initialize MapLibre before registering plugins");
+    }
+    const auto registerPlugin = reinterpret_cast<mln_plugin_register_function_v1>(dlsym(host, "mln_plugin_register_v1"));
+    if (!registerPlugin) {
+        dlclose(host);
+        return makeResult(env, MLN_PLUGIN_STATUS_NOT_FOUND, "This MapLibre SDK build does not enable the plugin API");
+    }
+    char error[512]{};
     const auto status = mln_ngon_layer_register(registerPlugin, error, sizeof(error));
+    dlclose(host); // MapLibre keeps its own reference for the process lifetime.
     return makeResult(env, status, error);
 }

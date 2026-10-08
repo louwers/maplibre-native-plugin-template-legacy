@@ -4,7 +4,8 @@ project(rectangle_layer LANGUAGES C CXX)
 if(NOT DEFINED MLN_RECTANGLE_PLUGIN_VERSION)
     set(MLN_RECTANGLE_PLUGIN_VERSION "0.1.0-local")
 endif()
-find_package(android-plugin-api REQUIRED CONFIG)
+# Header-only Prefab module from the MapLibre SDK AAR; plugins never link mbgl-core.
+find_package(MapLibreAndroid REQUIRED CONFIG)
 
 add_library(rectangle-layer SHARED
     ../../../../shared/cpp/rectangle_layer.cpp
@@ -18,4 +19,4 @@ target_include_directories(rectangle-layer PRIVATE
 target_compile_definitions(rectangle-layer PRIVATE
     MLN_RECTANGLE_PLUGIN_VERSION="${MLN_RECTANGLE_PLUGIN_VERSION}"
 )
-target_link_libraries(rectangle-layer PRIVATE android-plugin-api::plugin_api android log)
+target_link_libraries(rectangle-layer PRIVATE MapLibreAndroid::maplibre android dl log)

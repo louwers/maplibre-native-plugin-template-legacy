@@ -1,5 +1,3 @@
-import org.gradle.api.artifacts.type.ArtifactTypeDefinition
-
 plugins {
     id("com.android.library")
     id("maven-publish")
@@ -9,26 +7,13 @@ val pluginVersion = providers.gradleProperty("pluginVersion")
 val pluginGroup = providers.gradleProperty("pluginGroup").orElse("org.maplibre.plugins")
 val pluginAbis = providers.gradleProperty("maplibrePluginAbis").orNull
 val maplibreVersion = providers.gradleProperty("maplibreVersion")
-val maplibreJavaApiVersion = providers.gradleProperty("maplibreJavaApiVersion")
-
-// Java wrappers need MapLibre's layer/property types, but the renderer AAR must
-// not enter the native Prefab graph. Only android-plugin-api supplies native
-// headers and its STL-free anchor target to CMake.
-val maplibreJavaApi by configurations.creating {
-    isCanBeConsumed = false
-    isCanBeResolved = true
-    isTransitive = false
-}
-val maplibreJavaClasses = maplibreJavaApi.incoming.artifactView {
-    attributes.attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, "android-classes-jar")
-}.files
 
 group = pluginGroup.get()
 version = pluginVersion.get()
 
 android {
     namespace = "org.maplibre.plugins.ngon"
-    compileSdk = 34
+    compileSdk = 35
     ndkVersion = "28.2.13676358"
 
     defaultConfig {
@@ -60,14 +45,15 @@ android {
             java.setSrcDirs(listOf("android/src/main/java"))
         }
     }
-    packaging.jniLibs.excludes += setOf("**/libc++_shared.so", "**/libmaplibre.so")
+    packaging.jniLibs.excludes += setOf("**/libc++_shared.so", "**/libmaplibre.so", "**/libmaplibre-opengl.so")
     publishing { singleVariant("release") { withSourcesJar() } }
 }
 
 dependencies {
-    implementation("org.maplibre.gl:android-plugin-api:${maplibreVersion.get()}")
-    maplibreJavaApi("org.maplibre.gl:android-sdk:${maplibreJavaApiVersion.get()}@aar")
-    compileOnly(files(maplibreJavaClasses))
+    // Compile against a plugin-enabled MapLibre SDK: its Java style types and the
+    // header-only Prefab module that provides <mln/plugin/plugin_api.h>. The
+    // application selects the renderer artifact (OpenGL or Vulkan) at runtime.
+    compileOnly("org.maplibre.gl:android-sdk-opengl:${maplibreVersion.get()}")
 }
 
 publishing {
