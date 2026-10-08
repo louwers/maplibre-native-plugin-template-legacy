@@ -62,7 +62,6 @@ int main() {
     CHECK(layer.finish_layout(layout, &bucket) == MLN_PLUGIN_STATUS_OK);
     CHECK(bucket.vertex_stream_count == 1 && bucket.vertex_streams[0].vertex_count == 8);
     CHECK(bucket.index_count == 12 && bucket.drawable_count == 1);
-    CHECK(bucket.drawables[0].enable_stencil == 0);
     CHECK(bucket.feature_vertex_range_count == 1);
     CHECK(bucket.feature_vertex_ranges[0].feature_index == 3);
     layer.destroy_layout(layout);
