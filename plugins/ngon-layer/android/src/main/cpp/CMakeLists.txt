@@ -4,7 +4,8 @@ project(ngon_layer LANGUAGES C CXX)
 if(NOT DEFINED MLN_NGON_PLUGIN_VERSION)
     set(MLN_NGON_PLUGIN_VERSION "0.1.0-local")
 endif()
-find_package(android-plugin-api REQUIRED CONFIG)
+# Header-only Prefab module from the MapLibre SDK AAR; plugins never link mbgl-core.
+find_package(MapLibreAndroid REQUIRED CONFIG)
 
 add_library(ngon-layer SHARED
     ../../../../shared/cpp/ngon_layer.cpp
@@ -18,4 +19,4 @@ target_include_directories(ngon-layer PRIVATE
 target_compile_definitions(ngon-layer PRIVATE
     MLN_NGON_PLUGIN_VERSION="${MLN_NGON_PLUGIN_VERSION}"
 )
-target_link_libraries(ngon-layer PRIVATE android-plugin-api::plugin_api android log)
+target_link_libraries(ngon-layer PRIVATE MapLibreAndroid::maplibre android dl log)

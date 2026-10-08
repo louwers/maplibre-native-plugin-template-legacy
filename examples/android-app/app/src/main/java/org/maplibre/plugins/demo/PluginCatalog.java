@@ -3,9 +3,6 @@ package org.maplibre.plugins.demo;
 
 final class PluginCatalog {
   static void registerAll() {
-    org.maplibre.plugins.gltf.GltfLayerPlugin.register();
-    org.maplibre.plugins.heatmap.HeatmapLayerPlugin.register();
-    org.maplibre.plugins.hillshade.HillshadeLayerPlugin.register();
     org.maplibre.plugins.ngon.NgonLayerPlugin.register();
     org.maplibre.plugins.rectangle.RectangleLayerPlugin.register();
   }
@@ -17,8 +14,6 @@ final class PluginCatalog {
     }
   }
   static final Entry[] ENTRIES = {
-    new Entry("Eiffel Tower GLTF", "Load and render a remote GLB model", org.maplibre.plugins.demo.GltfDemoActivity.class),
-    new Entry("Heatmap layer", "Two-pass density rendering from GeoJSON points", org.maplibre.plugins.demo.HeatmapDemoActivity.class),
     new Entry("Capital Atlas", "Explore OpenFreeMap capitals with data-driven n-gons", org.maplibre.plugins.demo.NgonDemoActivity.class),
     new Entry("Rectangle layer", "Feature-driven colors, strokes, and smooth zoom interpolation", org.maplibre.plugins.demo.RectangleDemoActivity.class),
   };

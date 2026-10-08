@@ -1,7 +1,7 @@
 package org.maplibre.plugins.ngon;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import org.maplibre.android.LibraryLoader;
+import org.maplibre.android.MapLibre;
 
 /** Registers the source-bound {@code ngon} style layer. */
 public final class NgonLayerPlugin {
@@ -17,36 +17,25 @@ public final class NgonLayerPlugin {
 
   private NgonLayerPlugin() {}
 
+  /**
+   * Registers the layer type with the loaded MapLibre renderer. Call after
+   * {@link MapLibre#getInstance} and before loading a style that uses it.
+   */
   public static synchronized RegistrationResult register() {
-    long registrationFunctionAddress = registrationFunctionAddress();
+    // The renderer library exports mln_plugin_register_v1; make sure it is loaded.
+    LibraryLoader.load();
     if (!nativeLoaded) {
+      // The plugin retains native callbacks for the process lifetime; never unload it.
       System.loadLibrary("ngon-layer");
       nativeLoaded = true;
     }
-    NativeResult result = nativeRegister(registrationFunctionAddress);
+    NativeResult result = nativeRegister();
     if (result.status == 0) return RegistrationResult.REGISTERED;
     if (result.status == 1) return RegistrationResult.ALREADY_REGISTERED;
     throw new NgonLayerRegistrationException(result.status, result.message);
   }
 
-  private static long registrationFunctionAddress() {
-    try {
-      Class<?> registry = Class.forName("org.maplibre.android.plugins.MapLibrePluginRegistry");
-      Method ensureLoaded = registry.getMethod("ensureMapLibreLoaded");
-      Method address = registry.getMethod("registrationFunctionAddress");
-      ensureLoaded.invoke(null);
-      return ((Number) address.invoke(null)).longValue();
-    } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException error) {
-      throw new IllegalStateException("The selected MapLibre renderer does not provide plugin ABI v1", error);
-    } catch (InvocationTargetException error) {
-      Throwable cause = error.getCause();
-      if (cause instanceof RuntimeException) throw (RuntimeException) cause;
-      if (cause instanceof Error) throw (Error) cause;
-      throw new IllegalStateException("MapLibre plugin ABI initialization failed", cause);
-    }
-  }
-
-  private static native NativeResult nativeRegister(long registrationFunctionAddress);
+  private static native NativeResult nativeRegister();
 
   static final class NativeResult {
     final int status;
