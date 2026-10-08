@@ -152,9 +152,17 @@ with `MLN_WITH_PLUGINS=ON` for Linux OpenGL, Linux Vulkan and macOS Metal. See
 ## Publishing
 
 `.github/workflows/release-plugin.yml` builds a plugin's Android AAR against the
-pinned SDK and attaches it to a GitHub release. iOS plugins are distributed as
-source through this repository's Swift package at the same tag. JitPack builds
-the Android modules with `scripts/jitpack-build.sh`.
+pinned SDK and its iOS XCFramework, then attaches both (with SHA-256 checksums) to a
+GitHub release. Set its `publish` input to false to only build them as workflow
+artifacts. JitPack builds the Android modules with `scripts/jitpack-build.sh`.
+
+`scripts/build-ios-xcframework.sh PLUGIN VERSION OUTPUT_DIR` builds the iOS
+XCFramework locally. It is a static framework containing only the plugin, built for
+iOS devices and simulators from the plugin's Swift package target. Applications link
+it next to the `MapLibre` product of `maplibre-ios-with-plugin-api`, which provides
+`mln_plugin_register_v1`, and import it with `#import <NgonLayer/NgonLayer.h>`. Its
+module map autolinks libc++ and Foundation. iOS plugins are also available as source
+through this repository's Swift package at the same tag.
 
 ## Plugin API compared to the previous template revision
 

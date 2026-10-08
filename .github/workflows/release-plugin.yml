@@ -17,6 +17,11 @@ on:
         description: Semantic version, for example 0.0.1
         required: true
         type: string
+      publish:
+        description: Publish a GitHub release (disable to only build and upload workflow artifacts)
+        required: false
+        type: boolean
+        default: true
 
 permissions:
   contents: write
@@ -66,10 +71,36 @@ jobs:
           name: android-release
           path: release-assets/*
 
+  ios:
+    name: Build iOS XCFramework
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build iOS plugin
+        env:
+          PLUGIN: ${{ inputs.plugin }}
+          VERSION: ${{ inputs.version }}
+        run: |
+          # Compiles against the header-only MapLibrePluginApi product of the
+          # plugin-enabled MapLibre iOS package pinned in maplibre-ios-version.txt.
+          scripts/build-ios-xcframework.sh "$PLUGIN" "$VERSION" release-assets
+          cd release-assets
+          for archive in *.xcframework.zip; do
+            shasum -a 256 "$archive" > "$archive.sha256"
+          done
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ios-release
+          path: release-assets/*
+
   release:
     name: Publish GitHub release
+    if: inputs.publish
     needs:
       - android
+      - ios
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v8

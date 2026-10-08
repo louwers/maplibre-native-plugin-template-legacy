@@ -93,6 +93,9 @@ if let path = ProcessInfo.processInfo.environment["MAPLIBRE_IOS_PATH"] {
     mapLibreIOSPackage = "maplibre-ios-with-plugin-api"
 }
 
+// Release builds set MLN_PLUGIN_VERSION to embed the released plugin version.
+let pluginVersion = ProcessInfo.processInfo.environment["MLN_PLUGIN_VERSION"] ?? "0.1.0"
+
 let package = Package(
     name: "MapLibreNativePlugins",
     platforms: [.iOS("15.5")],

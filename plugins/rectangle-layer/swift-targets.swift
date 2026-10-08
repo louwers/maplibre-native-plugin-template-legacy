@@ -15,7 +15,7 @@
             publicHeadersPath: "ios/include",
             cxxSettings: [
                 .headerSearchPath("shared/include"),
-                .define("MLN_RECTANGLE_PLUGIN_VERSION", to: "\"0.1.0\""),
+                .define("MLN_RECTANGLE_PLUGIN_VERSION", to: "\"\(pluginVersion)\""),
             ],
             linkerSettings: [
                 .linkedFramework("Foundation"),
