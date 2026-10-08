@@ -3,116 +3,33 @@
 import PackageDescription
 import Foundation
 
-let packageRoot = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
-let nativeRevision = try! String(contentsOf: packageRoot.appendingPathComponent("native-revision.txt"), encoding: .utf8)
-    .trimmingCharacters(in: .whitespacesAndNewlines)
-let nativeDependency: Package.Dependency
-if let path = ProcessInfo.processInfo.environment["MAPLIBRE_NATIVE_PATH"] {
-    nativeDependency = .package(name: "maplibre-native", path: path)
+// Plugins compile against the header-only MapLibrePluginApi product of the
+// plugin-enabled MapLibre iOS distribution. Applications add its MapLibre product.
+// Set MAPLIBRE_IOS_PATH to a local checkout of that package to test unreleased builds.
+let mapLibreIOSDependency: Package.Dependency
+let mapLibreIOSPackage: String
+if let path = ProcessInfo.processInfo.environment["MAPLIBRE_IOS_PATH"] {
+    mapLibreIOSDependency = .package(path: path)
+    mapLibreIOSPackage = URL(fileURLWithPath: path).standardizedFileURL.lastPathComponent
 } else {
-    nativeDependency = .package(url: "https://github.com/maplibre/maplibre-native.git", revision: nativeRevision)
+    mapLibreIOSDependency = .package(url: "https://github.com/louwers/maplibre-ios-with-plugin-api", exact: "7.0.0-pre1")
+    mapLibreIOSPackage = "maplibre-ios-with-plugin-api"
 }
 
 let package = Package(
     name: "MapLibreNativePlugins",
-    platforms: [.iOS(.v14), .macOS(.v10_15)],
+    platforms: [.iOS("15.5")],
     products: [
-        .library(name: "GltfLayer", targets: ["GltfLayer"]),
-        .library(name: "HeatmapLayer", targets: ["HeatmapLayer"]),
-        .library(name: "HillshadeLayer", targets: ["HillshadeLayer"]),
         .library(name: "NgonLayer", targets: ["NgonLayer"]),
         .library(name: "RectangleLayer", targets: ["RectangleLayer"]),
     ],
-    dependencies: [nativeDependency],
+    dependencies: [mapLibreIOSDependency],
     targets: [
         .target(
-        name: "TinyGLTF",
-        path: "plugins/gltf-layer/vendor/tinygltf",
-        exclude: [
-        "CMakeLists.txt", "LICENSE", "Makefile", "README.md", "appveyor.yml", "cmake", "examples",
-        "examples.bat", "experimental", "loader_example.cc", "models", "premake5.lua", "test_runner.py",
-        "tests", "vcsetup.bat", "wasm",
-        ],
-        sources: ["tiny_gltf.cc"],
-        publicHeadersPath: "."
-        ),
-        .target(
-        name: "GltfLayer",
-        dependencies: [.product(name: "MapLibrePluginApi", package: "maplibre-native"), "TinyGLTF"],
-        path: "plugins/gltf-layer",
-        exclude: [
-        "BUILD.bazel",
-        "README.md",
-        "plugin.json", "swift-targets.swift", "examples",
-        "android",
-        ],
-        sources: [
-        "ios/src/GltfLayer.mm",
-        "shared/cpp/gltf_layer.cpp",
-        ],
-        publicHeadersPath: "ios/include",
-        cxxSettings: [
-        .headerSearchPath("shared/include"),
-        .define("MLN_GLTF_PLUGIN_VERSION", to: "\"0.1.0\""),
-        ],
-        linkerSettings: [
-        .linkedFramework("Foundation"),
-        ]
-        ),
-        .target(
-        name: "HeatmapLayer",
-        dependencies: [.product(name: "MapLibrePluginApi", package: "maplibre-native")],
-        path: "plugins/heatmap-layer",
-        exclude: [
-        "BUILD.bazel",
-        "README.md",
-        "plugin.json", "swift-targets.swift", "examples",
-        "android",
-        "render-tests",
-        ],
-        sources: [
-        "ios/src/HeatmapLayer.mm",
-        "shared/cpp/heatmap_layer.cpp",
-        ],
-        publicHeadersPath: "ios/include",
-        cxxSettings: [
-        .headerSearchPath("shared/include"),
-        .define("MLN_HEATMAP_PLUGIN_VERSION", to: "\"0.1.0\""),
-        ],
-        linkerSettings: [
-        .linkedFramework("Foundation"),
-        ]
-        ),
-        .target(
-        name: "HillshadeLayer",
-        dependencies: [.product(name: "MapLibrePluginApi", package: "maplibre-native")],
-        path: "plugins/hillshade-layer",
-        exclude: [
-        "BUILD.bazel",
-        "README.md",
-        "plugin.json", "swift-targets.swift", "examples",
-        "android",
-        "render-tests",
-        ],
-        sources: [
-        "ios/src/HillshadeLayer.mm",
-        "shared/cpp/hillshade_layer.cpp",
-        ],
-        publicHeadersPath: "ios/include",
-        cxxSettings: [
-        .headerSearchPath("shared/include"),
-        .define("MLN_HILLSHADE_PLUGIN_VERSION", to: "\"0.1.0\""),
-        ],
-        linkerSettings: [
-        .linkedFramework("Foundation"),
-        ]
-        ),
-        .target(
         name: "NgonLayer",
-        dependencies: [.product(name: "MapLibrePluginApi", package: "maplibre-native")],
+        dependencies: [.product(name: "MapLibrePluginApi", package: mapLibreIOSPackage)],
         path: "plugins/ngon-layer",
         exclude: [
-        "BUILD.bazel",
         "README.md",
         "plugin.json", "swift-targets.swift", "examples",
         "android",
@@ -133,10 +50,9 @@ let package = Package(
         ),
         .target(
         name: "RectangleLayer",
-        dependencies: [.product(name: "MapLibrePluginApi", package: "maplibre-native")],
+        dependencies: [.product(name: "MapLibrePluginApi", package: mapLibreIOSPackage)],
         path: "plugins/rectangle-layer",
         exclude: [
-        "BUILD.bazel",
         "README.md",
         "plugin.json", "swift-targets.swift", "examples",
         "android",
